@@ -35,7 +35,7 @@ jobs:
           pip install schemachange
 
           echo "Decoding private key"
-          echo "$SF_PRIVATE_KEY" | base64 --decode > private_key.p8
+          echo "$SF_PRIVATE_KEY" > private_key.p8
 
           echo "Running schemachange"
           schemachange -f $GITHUB_WORKSPACE/migrations \
