@@ -32,7 +32,9 @@ jobs:
           PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
         run: |
-          echo "Installing schemachange"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          python --version
+          echo "Step 1: Installing schemachange"
           pip install schemachange
 
           echo "Writing private key to file"
