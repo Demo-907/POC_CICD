@@ -1,4 +1,4 @@
-name: key-pair-auth
+name: snowflake-devops-demo
 
 on:
   push:
@@ -21,38 +21,33 @@ jobs:
         with:
           python-version: 3.8.x
 
-      - name: Run schemachange with key pair auth
+      - name: Run schemachange with key pair authentication and passphrase
         env:
           SF_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
           SF_USERNAME: ${{ secrets.SF_USERNAME }}
           SF_ROLE: ${{ secrets.SF_ROLE }}
           SF_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SF_DATABASE: ${{ secrets.SF_DATABASE }}
-          PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY }}
-          PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
+          SF_PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY }}
+          SF_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}
         run: |
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           python --version
-          echo "Step 1: Installing schemachange"
-          pip install schemachange
+          echo "Step 1: Installing schemachange and cryptography"
+          pip install schemachange cryptography
 
-          echo "Writing private key to file"
-          echo "$PRIVATE_KEY" > private_key.p8
+          echo "Step 2: Writing private key to file"
+          echo "$SF_PRIVATE_KEY" > private_key.p8
+          chmod 600 private_key.p8
 
-          echo "Setting environment variables for key pair authentication"
-          export SNOWFLAKE_PRIVATE_KEY_PATH=private_key.p8
-          export SNOWFLAKE_PRIVATE_KEY_PASSPHRASE="$PRIVATE_KEY_PASSPHRASE"
-
-          
-          echo "Running schemachange"
-            schemachange -f $GITHUB_WORKSPACE/migrations \
-              -a $SF_ACCOUNT \
-              -u $SF_USERNAME \
-              -r $SF_ROLE \
-              -w $SF_WAREHOUSE \
-              -d $SF_DATABASE \
-              -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY \
-              --private-key-path private_key.p8 \
-              --private-key-passphrase "$PRIVATE_KEY_PASSPHRASE"
-
+          echo "Step 3: Running schemachange with key pair and passphrase"
+          schemachange -f $GITHUB_WORKSPACE/migrations \
+            -a $SF_ACCOUNT \
+            -u $SF_USERNAME \
+            -r $SF_ROLE \
+            -w $SF_WAREHOUSE \
+            -d $SF_DATABASE \
+            -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY \
+            --create-change-history-table \
+            --private-key-path private_key.p8 \
+            --private-key-passphrase "$SF_PRIVATE_KEY_PASSPHRASE"
