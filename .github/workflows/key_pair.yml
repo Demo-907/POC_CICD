@@ -42,12 +42,15 @@ jobs:
           export SNOWFLAKE_PRIVATE_KEY_PATH=private_key.p8
           export SNOWFLAKE_PRIVATE_KEY_PASSPHRASE="$PRIVATE_KEY_PASSPHRASE"
 
+          
           echo "Running schemachange"
-          schemachange -f $GITHUB_WORKSPACE/migrations \
-            -a $SF_ACCOUNT \
-            -u $SF_USERNAME \
-            -r $SF_ROLE \
-            -w $SF_WAREHOUSE \
-            -d $SF_DATABASE \
-            -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY \
-            --create-change-history-table
+            schemachange -f $GITHUB_WORKSPACE/migrations \
+              -a $SF_ACCOUNT \
+              -u $SF_USERNAME \
+              -r $SF_ROLE \
+              -w $SF_WAREHOUSE \
+              -d $SF_DATABASE \
+              -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY \
+              --private-key-path private_key.p8 \
+              --private-key-passphrase "$PRIVATE_KEY_PASSPHRASE"
+
