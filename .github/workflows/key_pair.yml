@@ -34,7 +34,8 @@ jobs:
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           python --version
           echo "Step 1: Installing schemachange and cryptography"
-          pip install schemachange cryptography
+          pip install schemachange==3.7.0
+          pip install cryptography
 
           echo "Step 2: Writing private key to file"
           echo "$SF_PRIVATE_KEY" > private_key.p8
