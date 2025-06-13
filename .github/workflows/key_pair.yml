@@ -28,8 +28,8 @@ jobs:
           SF_ROLE: ${{ secrets.SF_ROLE }}
           SF_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SF_DATABASE: ${{ secrets.SF_DATABASE }}
-          SF_PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY }}
-          SF_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY }}
+          SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}
         run: |
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           python --version
@@ -50,5 +50,4 @@ jobs:
             -d $SF_DATABASE \
             -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY \
             --create-change-history-table \
-            --private-key-path private_key.p8 \
-            --private-key-passphrase "$SF_PRIVATE_KEY_PASSPHRASE"
+            
