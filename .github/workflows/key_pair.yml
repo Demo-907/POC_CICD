@@ -1,53 +1,44 @@
 name: key-pair
-
+# Controls when the action will run. 
 on:
   push:
     branches:
       - main
     paths:
       - 'migrations/**'
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
 jobs:
   deploy-snowflake-changes-job:
     runs-on: ubuntu-latest
-
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Use Python 3.8.x
+      - name: Use Python 3.11.x
         uses: actions/setup-python@v2.2.1
         with:
-          python-version: 3.8.x
-
-      - name: Run schemachange with key pair authentication and passphrase
+          python-version: 3.11.x
+      - name: Decrypt RSA key
+        run: |
+          echo "${{ secrets.SF_PRIVATE_KEY }}"  > rsa_key.p8
+          chmod 600 rsa_key.p8 
+      - name: Run schemachange
         env:
           SF_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
           SF_USERNAME: ${{ secrets.SF_USERNAME }}
           SF_ROLE: ${{ secrets.SF_ROLE }}
           SF_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SF_DATABASE: ${{ secrets.SF_DATABASE }}
-          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY }}
-          SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}
+          SNOWFLAKE_PRIVATE_KEY_PATH: ${{ secrets.SF_PRIVATE_KEY_PATH}}
+          SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE}}  
         run: |
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           python --version
-          echo "Step 1: Installing schemachange and cryptography"
+          echo "Step 1: Installing schemachange"
           pip install schemachange==3.7.0
-          pip install cryptography
-
-          echo "Step 2: Writing private key to file"
-          echo "$SF_PRIVATE_KEY" > private_key.p8
-          chmod 600 private_key.p8
-
-          echo "Step 3: Running schemachange with key pair and passphrase"
-          schemachange -f $GITHUB_WORKSPACE/migrations \
-            -a $SF_ACCOUNT \
-            -u $SF_USERNAME \
-            -r $SF_ROLE \
-            -w $SF_WAREHOUSE \
-            -d $SF_DATABASE \
-            -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY \
-            --create-change-history-table \
-            
+          
+          echo "Step 2: Running schemachange"
+          schemachange -f $GITHUB_WORKSPACE/DDLs -a $SF_ACCOUNT -u $SF_USERNAME -r $SF_ROLE -w $SF_WAREHOUSE -d $SF_DATABASE -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY --create-change-history-table
+      - name: Clean up private key file
+        run: rm -f rsa_key.p8
