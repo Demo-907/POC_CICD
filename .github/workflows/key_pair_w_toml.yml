@@ -28,7 +28,7 @@ jobs:
 
       - name: Create connections.toml
         run: |
-          echo "[default]" > connections.toml
+          echo '[default]' > connections.toml
           echo "account = \"${{ secrets.SF_ACCOUNT }}\"" >> connections.toml
           echo "user = \"${{ secrets.SF_USERNAME }}\"" >> connections.toml
           echo "role = \"${{ secrets.SF_ROLE }}\"" >> connections.toml
