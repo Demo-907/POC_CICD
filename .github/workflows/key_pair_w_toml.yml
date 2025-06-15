@@ -37,6 +37,11 @@ jobs:
           echo "private_key_file = \"rsa_key.p8\" " >> .github/workflows/connections.toml
           echo "private_key_file_pwd = \"${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\" " >> .github/workflows/connections.toml
 
+      - name: Changing Permissions of connections.toml file
+        run: |
+          chown $USER ".github/workflows/connections.toml"
+          chmod 0600 ".github/workflows/connections.toml"
+          
       - name: Run schemachange
         run: |
           echo "Installing schemachange"
