@@ -34,7 +34,7 @@ jobs:
           echo "role = \"${{ secrets.SF_ROLE }}\" " >> .github/workflows/connections.toml
           echo "warehouse = \"${{ secrets.SF_WAREHOUSE }}\" " >> .github/workflows/connections.toml
           echo "database = \"${{ secrets.SF_DATABASE }}\" " >> .github/workflows/connections.toml
-          echo "private_key_file = \"rsa_key.p8\" " >> .github/workflows/connections.toml
+          echo "private_key_file = \"${{ secrets.SF_PRIVATE_KEY_PATH}}\" " >> .github/workflows/connections.toml
           echo "private_key_file_pwd = \"${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\" " >> .github/workflows/connections.toml
 
       - name: Changing Permissions of connections.toml file
