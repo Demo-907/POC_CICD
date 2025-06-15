@@ -1,0 +1,57 @@
+name: key-pair-w-toml
+# Controls when the action will run. 
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'migrations/**'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  deploy-snowflake-changes-job:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Use Python 3.11.x
+        uses: actions/setup-python@v2.2.1
+        with:
+          python-version: 3.11.x
+      - name: Decrypt RSA key
+        run: |
+          echo "${{ secrets.SF_PRIVATE_KEY }}"  > rsa_key.p8
+          chmod 600 rsa_key.p8 
+      - name: Run schemachange
+        
+          cat <<EOF > connections.toml
+          [dev]
+          account = "${{ secrets.SF_ACCOUNT }}"
+          user = "${{ secrets.SF_USERNAME }}"
+private_key_path = "rsa_key.p8"
+private_key_passphrase = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
+role = "${{ secrets.SF_ROLE }}"
+warehouse = "${{ secrets.SF_WAREHOUSE }}"
+database = "${{ secrets.SF_DATABASE }}"
+schema = "${{ secrets.SF_SCHEMA }}"
+change_history_table = "${{ secrets.SF_DATABASE }}.SCHEMACHANGE.CHANGE_HISTORY"
+EOF
+
+        env:
+          SF_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
+          SF_USERNAME: ${{ secrets.SF_USERNAME }}
+          SF_ROLE: ${{ secrets.SF_ROLE }}
+          SF_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
+          SF_DATABASE: ${{ secrets.SF_DATABASE }}
+          SNOWFLAKE_PRIVATE_KEY_PATH: ${{ secrets.SF_PRIVATE_KEY_PATH}}
+          SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_PASSPHRASE}}  
+        run: |
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          python --version
+          echo "Step 1: Installing schemachange"
+          pip install schemachange==3.7.0
+          
+          echo "Step 2: Running schemachange"
+          schemachange -f $GITHUB_WORKSPACE/migrations --config-file connections.toml
+        run: rm -f rsa_key.p8
