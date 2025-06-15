@@ -48,7 +48,6 @@ jobs:
           pip install schemachange
 
           echo "Running schemachange"
-          schemachange -f migrations --config-file connections.toml
-
+          schemachange -f migrations --connections-file-path .github/workflows/connections.toml
       - name: Clean up sensitive files
         run: rm -f rsa_key.p8 connections.toml
