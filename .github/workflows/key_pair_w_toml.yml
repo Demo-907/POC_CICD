@@ -28,14 +28,14 @@ jobs:
 
       - name: Create connections.toml
         run: |
-          echo '[default]' > connections.toml
-          echo "account = \"${{ secrets.SF_ACCOUNT }}\"" >> connections.toml
-          echo "user = \"${{ secrets.SF_USERNAME }}\"" >> connections.toml
-          echo "role = \"${{ secrets.SF_ROLE }}\"" >> connections.toml
-          echo "warehouse = \"${{ secrets.SF_WAREHOUSE }}\"" >> connections.toml
-          echo "database = \"${{ secrets.SF_DATABASE }}\"" >> connections.toml
-          echo "private_key_file = \"rsa_key.p8\"" >> connections.toml
-          echo "private_key_file_pwd = \"${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\"" >> connections.toml
+          
+          echo "account = \"${{ secrets.SF_ACCOUNT }}\" " >> .github/workflows/connections.toml
+          echo "user = \"${{ secrets.SF_USERNAME }}\" " >> .github/workflows/connections.toml
+          echo "role = \"${{ secrets.SF_ROLE }}\" " >> .github/workflows/connections.toml
+          echo "warehouse = \"${{ secrets.SF_WAREHOUSE }}\" " >> .github/workflows/connections.toml
+          echo "database = \"${{ secrets.SF_DATABASE }}\" " >> .github/workflows/connections.toml
+          echo "private_key_file = \"rsa_key.p8\" " >> .github/workflows/connections.toml
+          echo "private_key_file_pwd = \"${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\" " >> .github/workflows/connections.toml
 
       - name: Run schemachange
         run: |
