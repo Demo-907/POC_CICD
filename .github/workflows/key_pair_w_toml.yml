@@ -31,10 +31,11 @@ jobs:
           cat <<EOF > .github/workflows/connections.toml
           account = "${{ secrets.SF_ACCOUNT }}"
           user = "${{ secrets.SF_USERNAME }}"
+          authenticator= "SNOWFLAKE_JWT"
           role = "${{ secrets.SF_ROLE }}"
           warehouse = "${{ secrets.SF_WAREHOUSE }}"
           database = "${{ secrets.SF_DATABASE }}"
-          private-key = "rsa_key.p8"
+          private_key_file = "rsa_key.p8"
           private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
           EOF
 
