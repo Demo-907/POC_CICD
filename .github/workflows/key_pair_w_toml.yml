@@ -34,7 +34,7 @@ jobs:
           role = "${{ secrets.SF_ROLE }}"
           warehouse = "${{ secrets.SF_WAREHOUSE }}"
           database = "${{ secrets.SF_DATABASE }}"
-          private_key_file = "rsa_key.p8"
+          private-key = "rsa_key.p8"
           private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
           EOF
 
