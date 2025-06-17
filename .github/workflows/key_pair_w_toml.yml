@@ -30,7 +30,7 @@ jobs:
         run: |
           cat <<EOF > .github/workflows/connections.toml
           account = "${{ secrets.SF_ACCOUNT }}"
-          user = "${{ secrets.SF_USERNAME }}"
+          user = "CICD_USER"
           role = "${{ secrets.SF_ROLE }}"
           warehouse = "${{ secrets.SF_WAREHOUSE }}"
           database = "${{ secrets.SF_DATABASE }}"
