@@ -67,8 +67,7 @@ jobs:
           pip install schemachange==3.7.0
           
           echo "Step 2: Running schemachange"
-          schemachange -f $GITHUB_WORKSPACE/migrations -c .github/workflows/connections.toml 
-      
+          schemachange -f $GITHUB_WORKSPACE/migrations \ -c .github/workflows/connections.toml \ -a dev
        
 
       - name: Clean up sensitive files
