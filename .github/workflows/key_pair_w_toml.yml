@@ -39,6 +39,9 @@ jobs:
           private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
           EOF
 
+      - name: List files in .github/workflows
+        run: ls -l .github/workflows
+
       - name: Debug connections.toml
         run: cat .github/workflows/connections.toml
 
