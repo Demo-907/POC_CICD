@@ -33,12 +33,12 @@ jobs:
           [connections.dev]
           account = "${{ secrets.SF_ACCOUNT }}"
           user = "${{ secrets.SF_USERNAME }}"
-          authenticator = "SNOWFLAKE_JWT"
+          authenticator = "SNOWFLAKE"
           role = "${{ secrets.SF_ROLE }}"
           warehouse = "${{ secrets.SF_WAREHOUSE }}"
           database = "${{ secrets.SF_DATABASE }}"
-          private_key_path = "rsa_key.p8"
-          private_key_passphrase = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
+          private_key_file = "rsa_key.p8"
+          private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
           EOF
 
       - name: List files in .github/workflows
