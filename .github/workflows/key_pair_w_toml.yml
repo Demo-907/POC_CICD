@@ -28,14 +28,17 @@ jobs:
 
       - name: Create connections.toml
         run: |
-          
-          echo "account = \"${{ secrets.SF_ACCOUNT }}\" " >> .github/workflows/connections.toml
-          echo "user = \"${{ secrets.SF_USERNAME }}\" " >> .github/workflows/connections.toml
-          echo "role = \"${{ secrets.SF_ROLE }}\" " >> .github/workflows/connections.toml
-          echo "warehouse = \"${{ secrets.SF_WAREHOUSE }}\" " >> .github/workflows/connections.toml
-          echo "database = \"${{ secrets.SF_DATABASE }}\" " >> .github/workflows/connections.toml
-          echo "private_key_file = \"${{ secrets.SF_PRIVATE_KEY_PATH}}\" " >> .github/workflows/connections.toml
-          echo "private_key_file_pwd = \"${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\" " >> .github/workflows/connections.toml
+          cat <<EOF > .github/workflows/connections.toml
+          account = "${{ secrets.SF_ACCOUNT }}"
+          user = "${{ secrets.SF_USERNAME }}"
+          role = "${{ secrets.SF_ROLE }}"
+          warehouse = "${{ secrets.SF_WAREHOUSE }}"
+          database = "${{ secrets.SF_DATABASE }}"
+          private_key_file = "rsa_key.p8"
+          private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
+          EOF
+
+
 
       - name: Changing Permissions of connections.toml file
         run: |
