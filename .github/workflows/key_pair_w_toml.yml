@@ -30,15 +30,15 @@ jobs:
         run: |
           mkdir -p .github/workflows
           cat <<EOF > .github/workflows/connections.toml
-account = "${{ secrets.SF_ACCOUNT }}"
-user = "${{ secrets.SF_USERNAME }}"
-authenticator = "SNOWFLAKE_JWT"
-role = "${{ secrets.SF_ROLE }}"
-warehouse = "${{ secrets.SF_WAREHOUSE }}"
-database = "${{ secrets.SF_DATABASE }}"
-private_key_file = "rsa_key.p8"
-private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
-EOF
+          account = "${{ secrets.SF_ACCOUNT }}"
+          user = "${{ secrets.SF_USERNAME }}"
+          authenticator = "SNOWFLAKE_JWT"
+          role = "${{ secrets.SF_ROLE }}"
+          warehouse = "${{ secrets.SF_WAREHOUSE }}"
+          database = "${{ secrets.SF_DATABASE }}"
+          private_key_file = "rsa_key.p8"
+          private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
+          EOF
 
       - name: List files in .github/workflows
         run: ls -l .github/workflows
