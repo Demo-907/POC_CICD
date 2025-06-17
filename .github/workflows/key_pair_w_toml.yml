@@ -39,6 +39,10 @@ jobs:
           private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
           EOF
 
+      - name: Debug connections.toml
+        run: cat .github/workflows/connections.toml
+
+
 
 
       - name: Changing Permissions of connections.toml file
