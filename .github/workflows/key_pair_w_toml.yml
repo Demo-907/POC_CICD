@@ -28,28 +28,29 @@ jobs:
 
       - name: Create connections.toml
         run: |
-          echo "account = \"\${{ secrets.SF_ACCOUNT }}\"" >> .github/workflows/connections.toml
-          echo "user = \"\${{ secrets.SF_USERNAME }}\"" >> .github/workflows/connections.toml
-          echo "authenticator = \"SNOWFLAKE_JWT\"" >> .github/workflows/connections.toml
-          echo "role = \"\${{ secrets.SF_ROLE }}\"" >> .github/workflows/connections.toml
-          echo "warehouse = \"\${{ secrets.SF_WAREHOUSE }}\"" >> .github/workflows/connections.toml
-          echo "database = \"\${{ secrets.SF_DATABASE }}\"" >> .github/workflows/connections.toml
-          echo "private_key_file = \"rsa_key.p8\"" >> .github/workflows/connections.toml
-          echo "private_key_file_pwd = \"\${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\"" >> .github/workflows/connections.toml
+          echo "[connections.dev]" > connections.toml
+          echo "account = \"\${{ secrets.SF_ACCOUNT }}\"" >> connections.toml
+          echo "user = \"\${{ secrets.SF_USERNAME }}\"" >> connections.toml
+          echo "authenticator = \"SNOWFLAKE_JWT\"" >> connections.toml
+          echo "role = \"\${{ secrets.SF_ROLE }}\"" >> connections.toml
+          echo "warehouse = \"\${{ secrets.SF_WAREHOUSE }}\"" >> connections.toml
+          echo "database = \"\${{ secrets.SF_DATABASE }}\"" >> connections.toml
+          echo "private_key_file = \"rsa_key.p8\"" >> connections.toml
+          echo "private_key_file_pwd = \"\${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\"" >> connections.toml
 
 
       - name: List files in .github/workflows
         run: ls -l .github/workflows
 
       - name: Debug connections.toml
-        run: cat .github/workflows/connections.toml
+        run: cat connections.toml
 
       - name: Set permissions for connections.toml
-        run: chmod 0600 .github/workflows/connections.toml
+        run: chmod 0600 connections.toml
 
       - name: Confirm connections.toml exists
         run: |
-          if [ -f .github/workflows/connections.toml ]; then
+          if [ -f connections.toml ]; then
             echo "✅ connections.toml exists"
           else
             echo "❌ connections.toml is missing"
@@ -64,8 +65,8 @@ jobs:
           pip install schemachange
           
           echo "Step 2: Running schemachange"
-          schemachange -f $GITHUB_WORKSPACE/migrations --connections-file-path $GITHUB_WORKSPACE/.github/workflows/connections.toml
+          schemachange -f $GITHUB_WORKSPACE/migrations --connections-file-path $GITHUB_WORKSPACE/connections.toml
        
 
       - name: Clean up sensitive files
-        run: rm -f rsa_key.p8 .github/workflows/connections.toml
+        run: rm -f rsa_key.p8 connections.toml
