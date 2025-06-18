@@ -31,11 +31,11 @@ jobs:
           echo "[connections.dev]" > connections.toml
           echo "account = \"${{ secrets.SF_ACCOUNT }}\"" >> connections.toml
           echo "user = \"${{ secrets.SF_USERNAME }}\"" >> connections.toml
-          echo "authenticator = \"SNOWFLAKE_JWT"" >> connections.toml
+          echo "authenticator = \"SNOWFLAKE_JWT\"" >> connections.toml
           echo "role = \"${{ secrets.SF_ROLE }}\"" >> connections.toml
           echo "warehouse = \"${{ secrets.SF_WAREHOUSE }}\"" >> connections.toml
           echo "database = \"${{ secrets.SF_DATABASE }}\"" >> connections.toml
-          echo "private_key_file = \"rsa_key.p8"" >> connections.toml
+          echo "private_key_file = \"rsa_key.p8\"" >> connections.toml
           echo "private_key_file_pwd = \"${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\"" >> connections.toml
 
 
