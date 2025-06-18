@@ -65,7 +65,7 @@ jobs:
           pip install schemachange
           
           echo "Step 2: Running schemachange"
-          schemachange -f sql-files --connections-file-path connections.toml  
+          schemachange -f $GITHUB_WORKSPACE/migrations --connections-file-path connections.toml  
        
 
       - name: Clean up sensitive files
