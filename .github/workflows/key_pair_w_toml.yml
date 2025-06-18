@@ -28,18 +28,15 @@ jobs:
 
       - name: Create connections.toml
         run: |
-          mkdir -p .github/workflows
-          cat <<EOF > .github/workflows/connections.toml
-          [connections.dev]
-          account = "${{ secrets.SF_ACCOUNT }}"
-          user = "${{ secrets.SF_USERNAME }}"
-          authenticator = "SNOWFLAKE"
-          role = "${{ secrets.SF_ROLE }}"
-          warehouse = "${{ secrets.SF_WAREHOUSE }}"
-          database = "${{ secrets.SF_DATABASE }}"
-          private_key_file = "rsa_key.p8"
-          private_key_file_pwd = "${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}"
-          EOF
+          echo "account = \"\${{ secrets.SF_ACCOUNT }}\"" >> .github/workflows/connections.toml
+          echo "user = \"\${{ secrets.SF_USERNAME }}\"" >> .github/workflows/connections.toml
+          echo "authenticator = \"SNOWFLAKE_JWT\"" >> .github/workflows/connections.toml
+          echo "role = \"\${{ secrets.SF_ROLE }}\"" >> .github/workflows/connections.toml
+          echo "warehouse = \"\${{ secrets.SF_WAREHOUSE }}\"" >> .github/workflows/connections.toml
+          echo "database = \"\${{ secrets.SF_DATABASE }}\"" >> .github/workflows/connections.toml
+          echo "private_key_file = \"rsa_key.p8\"" >> .github/workflows/connections.toml
+          echo "private_key_file_pwd = \"\${{ secrets.SF_PRIVATE_KEY_PASSPHRASE }}\"" >> .github/workflows/connections.toml
+
 
       - name: List files in .github/workflows
         run: ls -l .github/workflows
@@ -67,7 +64,7 @@ jobs:
           pip install schemachange
           
           echo "Step 2: Running schemachange"
-          schemachange -f $GITHUB_WORKSPACE/migrations -c .github/workflows/connections.toml -a dev
+          schemachange -f $GITHUB_WORKSPACE/migrations --connections-file-path .github/workflows/connections.toml
        
 
       - name: Clean up sensitive files
